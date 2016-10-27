@@ -17,7 +17,7 @@ This is mostly cool because you simply include it in your app, and it works.  Th
     ```js
     angular.module('myApp', ['angular-loading-bar', 'ngAnimate'])
     ```
-    
+
 2. include the supplied JS and CSS file (or create your own CSS to override defaults).
 
     ```html
@@ -38,12 +38,12 @@ $ npm install angular-loading-bar
 
 #### via CDN:
 ```html
- <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.css' type='text/css' media='all' />
- <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.7.1/loading-bar.min.js'></script>
+ <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css' type='text/css' media='all' />
+ <script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js'></script>
 ```
 
 ## Why I created this
-There are a couple projects similar to this out there, but none were ideal for me.  All implementations I've seen require that you maintain state on behalf of the loading bar.  In other words, you're setting the value of the loading/progress bar manually from potentially many different locations.  This becomes complicated when you have a very large application with several services all making independant XHR requests. It becomes even more complicated if you want these services to be loosly coupled.
+There are a couple projects similar to this out there, but none were ideal for me.  All implementations I've seen require that you maintain state on behalf of the loading bar.  In other words, you're setting the value of the loading/progress bar manually from potentially many different locations.  This becomes complicated when you have a very large application with several services all making independent XHR requests. It becomes even more complicated if you want these services to be loosly coupled.
 
 Additionally, Angular was created as a highly testable framework, so it pains me to see Angular modules without tests.  That is not the case here as this loading bar ships with 100% code coverage.
 
@@ -87,6 +87,27 @@ angular.module('myApp', ['angular-loading-bar'])
   .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
     cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Loading...</div>';
   }])
+```
+
+#### Position the template:
+If you'd like to position the loadingBar or spinner, provide a CSS selector to the element you'd like the template injected into. The default is the `<body>` element:
+
+```js
+angular.module('myApp', ['angular-loading-bar'])
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.parentSelector = '#loading-bar-container';
+    cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+  }])
+```
+```html
+<div id="loading-bar-container"></div>
+```
+
+Also keep in mind you'll likely want to change the CSS to reflect it's new position, so you'll need to override the default CSS:
+```css
+#loading-bar .bar {
+  position: relative;
+}
 ```
 
 #### Latency Threshold
@@ -161,7 +182,7 @@ cfpLoadingBar.inc();
 // increments the loading bar by a random amount.
 // It is important to note that the auto incrementing will begin to slow down as
 // the progress increases.  This is to prevent the loading bar from appearing
-// completed (or almost complete) before the XHR request has responded. 
+// completed (or almost complete) before the XHR request has responded.
 
 cfpLoadingBar.set(0.3) // Set the loading bar to 30%
 cfpLoadingBar.status() // Returns the loading bar's progress.
@@ -183,7 +204,7 @@ The loading bar broadcasts the following events over $rootScope allowing further
 
 **`cfpLoadingBar:completed`** triggered once when the all XHR requests have returned (either successfully or not)
 
-## Credits: 
+## Credits:
 Credit goes to [rstacruz](https://github.com/rstacruz) for his excellent [nProgress](https://github.com/rstacruz/nprogress).
 
 ## License:
